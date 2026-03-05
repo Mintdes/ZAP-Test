@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAISON — Premium Lifestyle Store</title>
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               script-src 'self' https://code.jquery.com;
+               style-src 'self' https://fonts.googleapis.com;
+               font-src 'self' https://fonts.gstatic.com;
+               img-src 'self' https://images.unsplash.com data:;
+               connect-src 'self';">
+<link rel="stylesheet" href="style.css">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous">
+</script>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#">MAISON</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="filterCategory('all')">New In</a></li>
+    <li><a href="#" onclick="filterCategory('women')">Women</a></li>
+    <li><a href="#" onclick="filterCategory('men')">Men</a></li>
+    <li><a href="#" onclick="filterCategory('accessories')">Accessories</a></li>
+    <li><a href="#sale">Sale</a></li>
+  </ul>
+  <div class="nav-actions">
+    <!-- แก้ไข: ย้าย style="position:relative" เป็น class และ style="padding:8px..." เป็น .nav-search-input -->
+    <div class="nav-search-wrap">
+      <input id="nav-search" type="text" placeholder="ค้นหาสินค้า..."
+        class="nav-search-input"
+        oninput="handleSearch(this.value)">
+    </div>
+    <button class="nav-btn" onclick="openModal('login-modal')" title="Account">👤</button>
+    <button class="nav-btn" onclick="toggleCart()" title="Cart">
+      🛒 <span class="cart-badge" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">New Collection 2025</div>
+    <h1>Dressed in <em>Quiet</em> Luxury</h1>
+    <p>คอลเลกชันใหม่ที่ออกแบบมาเพื่อผู้ที่เข้าใจความงามในความเรียบง่าย วัสดุชั้นเลิศจากทั่วโลก</p>
+    <!-- แก้ไข: ย้าย style="display:flex;gap:16px;flex-wrap:wrap" เป็น class .hero-btn-group -->
+    <div class="hero-btn-group">
+      <a class="btn-primary" href="#products">Shop Now <span class="arrow">→</span></a>
+      <!-- แก้ไข: ย้าย style="color:var(--cream);border-color:..." เป็น class .btn-outline-light -->
+      <button class="btn-outline btn-outline-light" onclick="scrollToProducts()">View Lookbook</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-block span2">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Hero">
+      <span class="img-label">Summer 2025</span>
+    </div>
+    <div class="hero-img-block">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80" alt="">
+      <span class="img-label">Women</span>
+    </div>
+    <div class="hero-img-block">
+      <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=400&q=80" alt="">
+      <span class="img-label">Men</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATEGORIES ── -->
+<section class="section categories">
+  <div class="section-header">
+    <h2>Shop by <span>Category</span></h2>
+    <!-- แก้ไข: ย้าย style="font-size:12px;padding:10px 24px" เป็น class .btn-outline-sm -->
+    <a href="#" class="btn-outline btn-outline-sm">View All</a>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" onclick="filterCategory('women')">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Women">
+      <div class="cat-overlay"><h3>Women</h3><p>248 Products</p></div>
+    </div>
+    <div class="cat-card" onclick="filterCategory('men')">
+      <img src="https://images.unsplash.com/photo-1507680434567-5739c80be1ac?w=600&q=80" alt="Men">
+      <div class="cat-overlay"><h3>Men</h3><p>186 Products</p></div>
+    </div>
+    <div class="cat-card" onclick="filterCategory('accessories')">
+      <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80" alt="Accessories">
+      <div class="cat-overlay"><h3>Accessories</h3><p>94 Products</p></div>
+    </div>
+    <div class="cat-card" onclick="filterCategory('sale')">
+      <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80" alt="Sale">
+      <div class="cat-overlay"><h3>Sale</h3><p>Up to 50% off</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCTS ── -->
+<section class="section" id="products">
+  <div class="section-header">
+    <h2>Featured <span>Products</span></h2>
+    <!-- แก้ไข: ย้าย style="display:flex;gap:8px;align-items:center" เป็น class .section-header-right -->
+    <div class="section-header-right">
+      <!-- แก้ไข: ย้าย style="font-size:13px;color:var(--mid)" เป็น class .product-count-label -->
+      <span class="product-count-label" id="product-count">Showing 8 items</span>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-chip active" onclick="filterCategory('all',this)">All</button>
+    <button class="filter-chip" onclick="filterCategory('women',this)">Women</button>
+    <button class="filter-chip" onclick="filterCategory('men',this)">Men</button>
+    <button class="filter-chip" onclick="filterCategory('accessories',this)">Accessories</button>
+    <button class="filter-chip" onclick="filterCategory('sale',this)" id="sale">Sale</button>
+  </div>
+  <div class="product-grid" id="product-grid"></div>
+</section>
+
+<!-- ── PROMO BANNER ── -->
+<section class="promo-banner">
+  <div>
+    <h2>Members Get <em>Extra 15%</em><br>On Every Order</h2>
+    <p>สมัครสมาชิกวันนี้รับสิทธิพิเศษมากมาย — Free shipping, Early access, Birthday reward</p>
+  </div>
+  <!-- แก้ไข: ย้าย style="display:flex;flex-direction:column;..." เป็น class .promo-signup-wrap -->
+  <div class="promo-signup-wrap">
+    <div class="search-bar">
+      <input type="email" placeholder="your@email.com" id="promo-email">
+      <button onclick="handlePromoSignup()">Join →</button>
+    </div>
+    <!-- แก้ไข: ย้าย style="font-size:12px;color:..." เป็น class .promo-note -->
+    <p class="promo-note">No spam, unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter">
+  <h2>Stay in the Loop</h2>
+  <p>รับข่าวสารคอลเลกชันใหม่ โปรโมชัน และ Style inspiration</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="อีเมลของคุณ" id="newsletter-email">
+    <button onclick="handleNewsletter()">Subscribe</button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">MAISON</div>
+      <p>คอลเลกชันแฟชั่นและไลฟ์สไตล์ระดับพรีเมียม<br>ออกแบบเพื่อชีวิตที่มีสไตล์และความหมาย</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Women</a></li>
+        <li><a href="#">Men</a></li>
+        <li><a href="#">Accessories</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping &amp; Returns</a></li>
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Track Order</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 MAISON. All rights reserved.</span>
+    <span>🇹🇭 Thailand · THB · English</span>
+  </div>
+</footer>
+
+<!-- ── CART DRAWER ── -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="drawer-header">
+    <h3>Your Cart</h3>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="cart-items"></div>
+  <!-- แก้ไข: ย้าย style="display:none" เป็น class .cart-footer-hidden ที่ JS จัดการ -->
+  <div class="drawer-footer cart-footer-hidden" id="cart-footer">
+    <div class="drawer-total">
+      <span>Total</span>
+      <span id="cart-total">฿0</span>
+    </div>
+    <!-- แก้ไข: ย้าย style="width:100%;justify-content:center" เป็น class .btn-primary-full -->
+    <button class="btn-primary btn-primary-full" onclick="openCheckout()">Checkout →</button>
+    <!-- แก้ไข: ย้าย style="text-align:center;margin-top:12px" เป็น class .drawer-continue -->
+    <div class="drawer-continue">
+      <a href="#" onclick="toggleCart()">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ── -->
+<div class="modal-backdrop" id="login-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+    <div id="auth-view">
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Sign in to your MAISON account</p>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••">
+      </div>
+      <!-- แก้ไข: ย้าย style="display:flex;justify-content:flex-end;margin-bottom:24px" เป็น class .forgot-wrap -->
+      <div class="forgot-wrap">
+        <a class="forgot-link" href="#">Forgot password?</a>
+      </div>
+      <button class="btn-primary btn-primary-full" onclick="handleLogin()">Sign In →</button>
+      <div class="form-link">Don't have an account? <a onclick="switchAuthView('register')">Create one</a></div>
+    </div>
+    <!-- แก้ไข: ย้าย style="display:none" เป็น class .view-hidden ที่ JS จัดการ -->
+    <div id="register-view" class="view-hidden">
+      <h2>Create Account</h2>
+      <p class="subtitle">Join MAISON for exclusive benefits</p>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="reg-fname" placeholder="สมชาย"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="reg-lname" placeholder="ใจดี"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="At least 8 characters"></div>
+      <div class="form-group"><label>Phone</label><input type="text" id="reg-phone" placeholder="08X-XXX-XXXX"></div>
+      <button class="btn-primary btn-primary-full" onclick="handleRegister()">Create Account →</button>
+      <div class="form-link">Already have an account? <a onclick="switchAuthView('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRODUCT MODAL ── -->
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal product-modal">
+    <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+    <div class="product-modal-img">
+      <img id="pm-img" src="" alt="">
+    </div>
+    <div class="product-modal-info">
+      <div class="product-modal-brand" id="pm-brand"></div>
+      <div class="product-modal-name" id="pm-name"></div>
+      <div class="product-modal-price" id="pm-price"></div>
+      <div class="product-modal-desc" id="pm-desc"></div>
+      <!-- แก้ไข: ย้าย style="margin-bottom:16px" เป็น class .option-group-sm -->
+      <div class="option-group-sm">
+        <!-- แก้ไข: ย้าย style="font-size:11px;..." เป็น class .option-label -->
+        <label class="option-label">Size</label>
+        <div class="size-options" id="pm-sizes"></div>
+      </div>
+      <!-- แก้ไข: ย้าย style="margin-bottom:28px" เป็น class .option-group-md -->
+      <div class="option-group-md">
+        <label class="option-label">Color</label>
+        <div class="color-options" id="pm-colors"></div>
+      </div>
+      <!-- แก้ไข: ย้าย style="display:flex;gap:12px" เป็น class .product-modal-cta -->
+      <div class="product-modal-cta">
+        <button class="btn-primary" onclick="addToCartFromModal()">Add to Cart →</button>
+        <!-- แก้ไข: ย้าย style="padding:14px 18px" เป็น class .btn-outline-icon -->
+        <button class="btn-outline btn-outline-icon">♡</button>
+      </div>
+      <!-- แก้ไข: ย้าย style="margin-top:20px;..." เป็น class .product-shipping-info -->
+      <div class="product-shipping-info">
+        <div>✓ Free shipping over ฿2,000</div>
+        <div>✓ 30-day return policy</div>
+        <div>✓ Authentic products guaranteed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHECKOUT MODAL ── -->
+<div class="modal-backdrop" id="checkout-modal">
+  <div class="modal checkout-modal">
+    <button class="modal-close" onclick="closeModal('checkout-modal')">✕</button>
+    <h2>Checkout</h2>
+    <p class="subtitle">Complete your order</p>
+    <!-- แก้ไข: ย้าย style="border:1px solid..." เป็น class .checkout-summary-box -->
+    <div class="checkout-summary-box">
+      <!-- แก้ไข: ย้าย style="font-size:13px;..." เป็น class .checkout-summary-items -->
+      <div class="checkout-summary-items" id="checkout-summary"></div>
+      <!-- แก้ไข: ย้าย style="border-top:1px..." เป็น class .checkout-summary-total -->
+      <div class="checkout-summary-total">
+        <span>Order Total</span>
+        <!-- แก้ไข: ย้าย style="color:var(--terra)" เป็น class .checkout-summary-total-amount -->
+        <span class="checkout-summary-total-amount" id="checkout-total"></span>
+      </div>
+    </div>
+    <div class="form-group"><label>Full Name</label><input type="text" id="co-name" placeholder="ชื่อ-นามสกุล"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="co-email" placeholder="your@email.com"></div>
+    <div class="form-group"><label>Phone</label><input type="text" id="co-phone" placeholder="08X-XXX-XXXX"></div>
+    <div class="form-group"><label>Shipping Address</label><input type="text" id="co-address" placeholder="บ้านเลขที่ ถนน แขวง เขต กรุงเทพฯ"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Province</label>
+        <select id="co-province">
+          <option>กรุงเทพมหานคร</option><option>เชียงใหม่</option><option>ภูเก็ต</option><option>ขอนแก่น</option><option>นครราชสีมา</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Postal Code</label><input type="text" id="co-zip" placeholder="10110"></div>
+    </div>
+    <!-- แก้ไข: ย้าย style="border-top:..." เป็น class .payment-section -->
+    <div class="payment-section">
+      <!-- แก้ไข: ย้าย style="font-size:11px;..." เป็น class .payment-label -->
+      <label class="payment-label">Payment Method</label>
+      <!-- แก้ไข: ย้าย style="display:flex;gap:10px;..." เป็น class .payment-options -->
+      <div class="payment-options">
+        <!-- แก้ไข: ย้าย style="display:flex;align-items:center;..." เป็น class .payment-option -->
+        <label class="payment-option"><input type="radio" name="payment" value="card" checked> Credit/Debit Card</label>
+        <label class="payment-option"><input type="radio" name="payment" value="promptpay"> PromptPay</label>
+        <label class="payment-option"><input type="radio" name="payment" value="cod"> เก็บเงินปลายทาง</label>
+      </div>
+      <div class="form-group"><label>Card Number</label><input type="text" id="co-card" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Expiry</label><input type="text" id="co-expiry" placeholder="MM/YY" maxlength="5"></div>
+        <div class="form-group"><label>CVV</label><input type="text" id="co-cvv" placeholder="123" maxlength="3"></div>
+      </div>
+    </div>
+    <!-- แก้ไข: ย้าย style="margin-top:8px" รวมเข้า class -->
+    <button class="btn-primary btn-primary-full" onclick="handleCheckout()">Place Order →</button>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toast-msg">Added to cart</span></div>
+
+<script>
+// ── DATA ──
+const products = [
+  { id:1, name:'Silk Wrap Dress', brand:'MAISON', category:'women', price:4890, oldPrice:null, image:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80', badge:'New', sizes:['XS','S','M','L','XL'], colors:['#2c2c2c','#c0714f','#8b9dad'], desc:'Luxurious silk wrap dress with adjustable tie waist. Perfect for both day and evening occasions.' },
+  { id:2, name:'Linen Blazer Set', brand:'MAISON', category:'women', price:6490, oldPrice:8990, image:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80', badge:'Sale', sizes:['XS','S','M','L'], colors:['#d4c5a9','#2c2c2c'], desc:'Relaxed linen blazer and straight-leg trouser set. Effortless sophistication for any setting.' },
+  { id:3, name:'Merino Wool Coat', brand:'MAISON', category:'men', price:12900, oldPrice:null, image:'https://images.unsplash.com/photo-1507680434567-5739c80be1ac?w=600&q=80', badge:'New', sizes:['S','M','L','XL','XXL'], colors:['#3d3530','#1a2a3a','#8b7355'], desc:'Premium merino wool overcoat with horn buttons. A timeless investment piece.' },
+  { id:4, name:'Italian Leather Bag', brand:'MAISON', category:'accessories', price:8990, oldPrice:null, image:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80', badge:null, sizes:['One Size'], colors:['#8b6914','#2c2c2c','#c0714f'], desc:'Hand-crafted Italian leather tote with gold hardware. Spacious enough for everyday essentials.' },
+  { id:5, name:'Cashmere Knit Top', brand:'MAISON', category:'women', price:3290, oldPrice:4500, image:'https://images.unsplash.com/photo-1485518882345-15568b007407?w=600&q=80', badge:'Sale', sizes:['XS','S','M','L'], colors:['#e8ddd0','#2c2c2c','#c8a882'], desc:'Pure cashmere ribbed knit with a relaxed fit. Incredibly soft against skin.' },
+  { id:6, name:'Oxford Slim Trousers', brand:'MAISON', category:'men', price:3890, oldPrice:null, image:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80', badge:null, sizes:['28','30','32','34','36'], colors:['#2c2c2c','#3d3530','#d4c5a9'], desc:'Slim-cut trousers in a premium cotton-wool blend. Sharp, comfortable, versatile.' },
+  { id:7, name:'Silk Scarf', brand:'MAISON', category:'accessories', price:1890, oldPrice:2500, image:'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80', badge:'Sale', sizes:['One Size'], colors:['#c0714f','#2c5f8a','#2c2c2c'], desc:'100% pure silk scarf with hand-rolled edges. A versatile accessory for every season.' },
+  { id:8, name:'Structured Shirt Dress', brand:'MAISON', category:'women', price:5490, oldPrice:null, image:'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80', badge:'New', sizes:['XS','S','M','L','XL'], colors:['#f0ebe3','#2c2c2c','#8b9dad'], desc:'Tailored shirt dress in premium poplin. A modern take on a wardrobe classic.' },
+];
+
+let cart = [];
+let currentProduct = null;
+let filteredProducts = [...products];
+
+// ── RENDER PRODUCTS ──
+function renderProducts(list) {
+  const grid = document.getElementById('product-grid');
+  document.getElementById('product-count').textContent = `Showing ${list.length} items`;
+  grid.innerHTML = list.map((p,i) => `
+    <div class="product-card" style="animation-delay:${i*0.06}s" onclick="openProductModal(${p.id})">
+      <div class="product-img">
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="product-badge ${p.badge==='New'?'new':''}">${p.badge}</span>` : ''}
+        <div class="product-actions" onclick="event.stopPropagation()">
+          <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+          <button class="btn-wishlist">♡</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">
+          <span class="price-current">฿${p.price.toLocaleString()}</span>
+          ${p.oldPrice ? `<span class="price-old">฿${p.oldPrice.toLocaleString()}</span><span class="price-discount">-${Math.round((1-p.price/p.oldPrice)*100)}%</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── FILTER ──
+function filterCategory(cat, btn) {
+  if(btn) {
+    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  filteredProducts = cat==='all' ? [...products] : products.filter(p=>p.category===cat || (cat==='sale'&&p.oldPrice));
+  renderProducts(filteredProducts);
+}
+
+// ── SEARCH ──
+function handleSearch(q) {
+  const results = q ? products.filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.brand.toLowerCase().includes(q.toLowerCase())) : [...products];
+  renderProducts(results);
+  const el = document.getElementById('products');
+  if(q) el.scrollIntoView({behavior:'smooth'});
+}
+
+// ── PRODUCT MODAL ──
+function openProductModal(id) {
+  currentProduct = products.find(p=>p.id===id);
+  if(!currentProduct) return;
+  document.getElementById('pm-img').src = currentProduct.image;
+  document.getElementById('pm-brand').textContent = currentProduct.brand;
+  document.getElementById('pm-name').textContent = currentProduct.name;
+  document.getElementById('pm-price').textContent = '฿'+currentProduct.price.toLocaleString() + (currentProduct.oldPrice ? `  (was ฿${currentProduct.oldPrice.toLocaleString()})` : '');
+  document.getElementById('pm-desc').textContent = currentProduct.desc;
+  document.getElementById('pm-sizes').innerHTML = currentProduct.sizes.map((s,i)=>`<button class="size-btn ${i===0?'active':''}" onclick="selectSize(this)">${s}</button>`).join('');
+  document.getElementById('pm-colors').innerHTML = currentProduct.colors.map((c,i)=>`<button class="color-btn ${i===0?'active':''}" style="background:${c}" onclick="selectColor(this)"></button>`).join('');
+  openModal('product-modal');
+}
+
+function selectSize(btn) {
+  btn.closest('.size-options').querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selectColor(btn) {
+  btn.closest('.color-options').querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function addToCartFromModal() {
+  if(currentProduct) { addToCart(currentProduct.id); closeModal('product-modal'); }
+}
+
+// ── CART ──
+function addToCart(id) {
+  const product = products.find(p=>p.id===id);
+  const existing = cart.find(i=>i.id===id);
+  if(existing) existing.qty++;
+  else cart.push({...product, qty:1});
+  updateCartUI();
+  showToast(`${product.name} added to cart`);
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count').textContent = total;
+  const sum = cart.reduce((s,i)=>s+(i.price*i.qty),0);
+  document.getElementById('cart-total').textContent = '฿'+sum.toLocaleString();
+  const itemsEl = document.getElementById('cart-items');
+  const footerEl = document.getElementById('cart-footer');
+  if(cart.length===0) {
+    // แก้ไข: ใช้ class แทน inline style
+    itemsEl.innerHTML = `<div class="empty-cart"><div class="empty-icon">🛍️</div><p>Your cart is empty</p><button class="btn-outline btn-centered" onclick="toggleCart()">Continue Shopping</button></div>`;
+    footerEl.classList.add('cart-footer-hidden');
+  } else {
+    footerEl.classList.remove('cart-footer-hidden');
+    itemsEl.innerHTML = cart.map(item=>`
+      <div class="cart-item">
+        <img class="cart-item-img" src="${item.image}" alt="${item.name}">
+        <div class="cart-item-info">
+          <div class="cart-item-brand">${item.brand}</div>
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">฿${item.price.toLocaleString()}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+            <button class="remove-item" onclick="removeItem(${item.id})">Remove</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i=>i.id===id);
+  if(item) { item.qty += delta; if(item.qty<=0) removeItem(id); else updateCartUI(); }
+}
+function removeItem(id) { cart = cart.filter(i=>i.id!==id); updateCartUI(); }
+
+function toggleCart() {
+  const drawer = document.getElementById('cart-drawer');
+  const overlay = document.getElementById('overlay');
+  const isOpen = drawer.classList.contains('open');
+  if(isOpen) { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+  else { updateCartUI(); drawer.classList.add('open'); overlay.classList.add('open'); }
+}
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function switchAuthView(view) {
+  // แก้ไข: ใช้ class .view-hidden แทน inline style
+  const authEl = document.getElementById('auth-view');
+  const regEl = document.getElementById('register-view');
+  if(view === 'login') {
+    authEl.classList.remove('view-hidden');
+    regEl.classList.add('view-hidden');
+  } else {
+    authEl.classList.add('view-hidden');
+    regEl.classList.remove('view-hidden');
+  }
+}
+
+function handleLogin() {
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-pass').value;
+  if(!email||!pass) { showToast('Please fill in all fields'); return; }
+  showToast(`Welcome back! Signed in as ${email}`);
+  closeModal('login-modal');
+}
+function handleRegister() {
+  const email = document.getElementById('reg-email').value;
+  const fname = document.getElementById('reg-fname').value;
+  if(!email||!fname) { showToast('Please fill in required fields'); return; }
+  showToast(`Account created! Welcome, ${fname}!`);
+  closeModal('login-modal');
+}
+
+// ── CHECKOUT ──
+function openCheckout() {
+  if(cart.length===0) return;
+  closeAll();
+  const sum = cart.reduce((s,i)=>s+(i.price*i.qty),0);
+  // แก้ไข: ใช้ class .checkout-summary-items แทน inline style
+  document.getElementById('checkout-summary').innerHTML = cart.map(i=>`
+    <div class="checkout-summary-row">
+      <span>${i.name} × ${i.qty}</span>
+      <span>฿${(i.price*i.qty).toLocaleString()}</span>
+    </div>`).join('');
+  document.getElementById('checkout-total').textContent = '฿'+sum.toLocaleString();
+  openModal('checkout-modal');
+}
+
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function handleCheckout() {
+  const name = document.getElementById('co-name').value;
+  const email = document.getElementById('co-email').value;
+  const address = document.getElementById('co-address').value;
+  if(!name||!email||!address) { showToast('Please fill in all required fields'); return; }
+  const sum = cart.reduce((s,i)=>s+(i.price*i.qty),0);
+  closeModal('checkout-modal');
+  cart = [];
+  updateCartUI();
+  showToast(`✓ Order placed! Total ฿${sum.toLocaleString()} — Thank you, ${name}!`);
+}
+
+// ── NEWSLETTER ──
+function handleNewsletter() {
+  const email = document.getElementById('newsletter-email').value;
+  if(!email) return;
+  showToast(`🎉 Subscribed! Welcome to MAISON`);
+  document.getElementById('newsletter-email').value='';
+}
+function handlePromoSignup() {
+  const email = document.getElementById('promo-email').value;
+  if(!email) return;
+  showToast(`🎉 You're in! 15% discount code sent to ${email}`);
+  document.getElementById('promo-email').value='';
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function scrollToProducts() { document.getElementById('products').scrollIntoView({behavior:'smooth'}); }
+
+// Close modals on backdrop click
+document.querySelectorAll('.modal-backdrop').forEach(b=>{
+  b.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+});
+
+// Init
+renderProducts(products);
+updateCartUI();
+</script>
+</body>
+</html>
